@@ -5,10 +5,10 @@ namespace project_actaware.Commands
 {
     public class GetProductByBarcodeCommand : IRequest<Product>
     {
-        public int Barcode { get; }
-        public GetProductByBarcodeCommand(int barcode)
+        public string Barcode { get; }
+        public GetProductByBarcodeCommand(string barcode)
         {
-            this.Barcode = barcode;
+            Barcode = barcode;
         }
     }
     

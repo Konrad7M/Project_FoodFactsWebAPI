@@ -17,7 +17,7 @@ namespace project_actaware.Controllers
             _mediator = mediator;
         }
         [HttpGet("getProductByBarcode/{barcode}")]
-        public async Task<IActionResult> GetProductByBarcode(int barcode)
+        public async Task<IActionResult> GetProductByBarcode(string barcode)
         {
             Product product = await _mediator.Send(new GetProductByBarcodeCommand(barcode));
             return Ok(product);
