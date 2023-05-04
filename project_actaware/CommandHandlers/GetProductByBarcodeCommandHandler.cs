@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.OpenApi.Models;
 using project_actaware.Commands;
+using project_actaware.Execptions;
 using project_actaware.Models;
 using RestSharp;
 using System.Text.Json;
@@ -24,7 +25,7 @@ public class GetProductByBarcodeCommandHandler: IRequestHandler<GetProductByBarc
                 var statusCode = root.GetProperty("status");
                 if(JsonSerializer.Deserialize<int>(statusCode) == 0)
                 {
-                    throw new Exception("busines expestion");
+                    throw new BusinessException("product not found");
                 }
                 var productJson = root.GetProperty("product");
                 var product = JsonSerializer.Deserialize<Product>(productJson);
@@ -33,7 +34,7 @@ public class GetProductByBarcodeCommandHandler: IRequestHandler<GetProductByBarc
         }
         else
         {
-            throw new Exception("response error");
+            throw new Exception("response failed");
         }
     }
 }

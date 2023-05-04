@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using project_actaware.Commands;
+using project_actaware.Execptions;
 using project_actaware.Models;
 
 namespace project_actaware.Controllers
@@ -19,8 +20,16 @@ namespace project_actaware.Controllers
         [HttpGet("getProductByBarcode/{barcode}")]
         public async Task<IActionResult> GetProductByBarcode(string barcode)
         {
-            Product product = await _mediator.Send(new GetProductByBarcodeCommand(barcode));
-            return Ok(product);
+            try
+            {
+                Product product = await _mediator.Send(new GetProductByBarcodeCommand(barcode));
+
+                return Ok(product);
+            }
+            catch(BusinessException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
