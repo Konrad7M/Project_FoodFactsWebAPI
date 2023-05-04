@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "project_actaware", "project_actaware\project_actaware.csproj", "{3AF0B911-72C9-47A2-A943-FBFBF4579450}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3AF0B911-72C9-47A2-A943-FBFBF4579450}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AF0B911-72C9-47A2-A943-FBFBF4579450}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AF0B911-72C9-47A2-A943-FBFBF4579450}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AF0B911-72C9-47A2-A943-FBFBF4579450}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4AD7CE56-60B2-43FF-9642-D86CF4FA8F18}
+	EndGlobalSection
+EndGlobal
