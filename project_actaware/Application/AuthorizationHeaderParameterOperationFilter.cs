@@ -28,7 +28,7 @@ namespace project_actaware.MiddleWare
                     Schema = new OpenApiSchema
                     {
                         Type = "string",
-                        Default = new OpenApiString("twoj_stary_jest_zdeprecowany")
+                        Default = new OpenApiString("generic_api_key")
                     }
                 });
             }
