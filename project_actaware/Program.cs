@@ -1,4 +1,3 @@
-using Microsoft.OpenApi.Models;
 using project_actaware.MiddleWare;
 using System.Reflection;
 

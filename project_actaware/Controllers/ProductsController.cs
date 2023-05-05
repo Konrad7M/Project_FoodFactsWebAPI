@@ -19,6 +19,7 @@ namespace project_actaware.Controllers
         {
             _mediator = mediator;
         }
+       
         [HttpGet("getProductByBarcode/{barcode}")]
         public async Task<IActionResult> GetProductByBarcode(string barcode)
         {

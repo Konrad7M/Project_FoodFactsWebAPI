@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Microsoft.OpenApi.Models;
+using Polly;
 using project_actaware.Commands;
 using project_actaware.Execptions;
 using project_actaware.Models;
@@ -16,31 +16,35 @@ public class GetProductByBarcodeCommandHandler: IRequestHandler<GetProductByBarc
         var barcode = command.Barcode;
         var client = new RestClient("https://world.openfoodfacts.org");
         var request = new RestRequest($"https://world.openfoodfacts.org/api/v0/product/{barcode}.json", Method.Get);
-
-        var response = client.Get(request);
-        if (response.IsSuccessful)
+        var retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(i * 5));
+        var response = await retryPolicy.ExecuteAsync(async () =>
         {
-            using (JsonDocument document = JsonDocument.Parse(response.Content))
-            {
-                var options = new JsonSerializerOptions()
-                {
-                    NumberHandling = JsonNumberHandling.AllowReadingFromString |
-                       JsonNumberHandling.WriteAsString
-                };
-                JsonElement root = document.RootElement;
-                var statusCode = root.GetProperty("status");
-                if(JsonSerializer.Deserialize<int>(statusCode) == 0)
-                {
-                    throw new BusinessException("product not found");
-                }
-                var productJson = root.GetProperty("product");
-                var product = JsonSerializer.Deserialize<Product>(productJson, options);
-                return product;
-            }
-        }
-        else
+            return await client.GetAsync(request, cancelationToken);
+        });
+        if (!response.IsSuccessful)
         {
             throw new Exception("response failed");
+        }
+        if (response.Content == null)
+        {
+            throw new Exception("response content null");
+        }
+        using (JsonDocument document = JsonDocument.Parse(response.Content))
+        {
+            var options = new JsonSerializerOptions()
+            {
+                NumberHandling = JsonNumberHandling.AllowReadingFromString |
+                   JsonNumberHandling.WriteAsString
+            };
+            JsonElement root = document.RootElement;
+            var statusCode = root.GetProperty("status");
+            if(JsonSerializer.Deserialize<int>(statusCode) == 0)
+            {
+                throw new BusinessException("product not found");
+            }
+            var productJson = root.GetProperty("product");
+            var product = JsonSerializer.Deserialize<Product>(productJson, options);
+            return product ?? throw new Exception("desarialization failed");
         }
     }
 }
