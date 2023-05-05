@@ -10,6 +10,7 @@ using project_actaware.Models;
 namespace project_actaware.Controllers
 {
     [ApiController]
+    [ApiKeyAuthorization]
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
@@ -18,7 +19,6 @@ namespace project_actaware.Controllers
         {
             _mediator = mediator;
         }
-        [ApiKey]
         [HttpGet("getProductByBarcode/{barcode}")]
         public async Task<IActionResult> GetProductByBarcode(string barcode)
         {
@@ -33,7 +33,6 @@ namespace project_actaware.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [ApiKey]
         [HttpGet("getProductsByName/{productName}")]
         public async Task<IActionResult> GetProductByName(string productName)
         {

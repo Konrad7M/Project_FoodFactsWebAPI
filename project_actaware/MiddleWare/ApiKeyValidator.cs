@@ -10,7 +10,6 @@
         public bool IsValid(string apiKey)
         {
             return _configuration.GetValue<string>("AppSettings:ApiKey") == apiKey;
-            // Implement logic for validating the API key.
         }
     }
 
