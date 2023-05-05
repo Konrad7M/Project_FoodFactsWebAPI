@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-  //  c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
+    c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
 });
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
