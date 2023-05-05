@@ -5,6 +5,7 @@ using project_actaware.Execptions;
 using project_actaware.Models;
 using RestSharp;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace project_actaware.CommandHandlers;
 
@@ -21,6 +22,11 @@ public class GetProductByBarcodeCommandHandler: IRequestHandler<GetProductByBarc
         {
             using (JsonDocument document = JsonDocument.Parse(response.Content))
             {
+                var options = new JsonSerializerOptions()
+                {
+                    NumberHandling = JsonNumberHandling.AllowReadingFromString |
+                       JsonNumberHandling.WriteAsString
+                };
                 JsonElement root = document.RootElement;
                 var statusCode = root.GetProperty("status");
                 if(JsonSerializer.Deserialize<int>(statusCode) == 0)
@@ -28,7 +34,7 @@ public class GetProductByBarcodeCommandHandler: IRequestHandler<GetProductByBarc
                     throw new BusinessException("product not found");
                 }
                 var productJson = root.GetProperty("product");
-                var product = JsonSerializer.Deserialize<Product>(productJson);
+                var product = JsonSerializer.Deserialize<Product>(productJson, options);
                 return product;
             }
         }

@@ -14,7 +14,10 @@ namespace project_actaware.Models
 
         [JsonPropertyName("serving_size")]
         public string ServingSize {get ; set;}
+        [JsonPropertyName("code")]
+        public string Barcode { get; set; }
         [JsonPropertyName("nutriments")]
         public Nutriments Nutriments { get; set; }
+
     }
 }

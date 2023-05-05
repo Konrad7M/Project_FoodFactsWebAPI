@@ -31,5 +31,19 @@ namespace project_actaware.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("getProductsByName/{productName}")]
+        public async Task<IActionResult> GetProductByName(string productName)
+        {
+            try
+            {
+                IEnumerable<Product> products = await _mediator.Send(new GetProductsByNameCommand(productName));
+
+                return Ok(products);
+            }
+            catch (BusinessException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
