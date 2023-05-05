@@ -10,8 +10,6 @@ namespace project_actaware.Models
         public string Quantity { get; set; }
         [JsonPropertyName("image_url")]
         public string ImageUrl { get; set; }
-        public bool IsVegan { get; set; }
-
         [JsonPropertyName("serving_size")]
         public string ServingSize {get ; set;}
         [JsonPropertyName("code")]
