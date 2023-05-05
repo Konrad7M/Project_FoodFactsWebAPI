@@ -10,14 +10,22 @@ namespace project_actaware.CommandHandlers
 {
     public class GetProductsByNameCommandHandler : IRequestHandler<GetProductsByNameCommand, IEnumerable<Product>>
     {
+        private int pageCount;
         public async Task<IEnumerable<Product>> Handle(GetProductsByNameCommand command, CancellationToken cancelationToken)
         {
-            var productName = command.ProductName;
+            var products = GetProducts(command.ProductName, 1, true);
+            for(int i = 2; i <= pageCount; i++)
+            {
+                products.AddRange(GetProducts(command.ProductName, i, false));
+            }
+            return products;
+        }
+
+        private List<Product> GetProducts(string productName, int pageNumber, bool checkPageCount = false)
+        {
             var client = new RestClient("https://world.openfoodfacts.org");
-            var request = new RestRequest($"https://world.openfoodfacts.org/cgi/search.pl?search_terms={productName}&search_simple=1&json=1&page=1", Method.Get);
+            var request = new RestRequest($"https://world.openfoodfacts.org/cgi/search.pl?search_terms={productName}&search_simple=1&json=1&page={pageNumber}", Method.Get);
             request.Timeout = 100000;
-            List<Product> products = new List<Product>();
-            int pageCount;
             var response = client.Get(request);
             if (response.IsSuccessful)
             {
@@ -29,43 +37,18 @@ namespace project_actaware.CommandHandlers
                         JsonNumberHandling.WriteAsString
                     };
                     JsonElement root = document.RootElement;
-
-                    pageCount = JsonSerializer.Deserialize<int>(root.GetProperty("page_count"));
+                    if (checkPageCount)
+                    {
+                        pageCount = JsonSerializer.Deserialize<int>(root.GetProperty("page_count"));
+                    }
                     var productJson = root.GetProperty("products");
-                    products.AddRange(JsonSerializer.Deserialize<IEnumerable<Product>>(productJson, options));
+                    return JsonSerializer.Deserialize<List<Product>>(productJson, options);
                 }
             }
             else
             {
-                throw new Exception("response failed");
+                throw new Exception("connection failed");
             }
-
-            for(int i = 2; i <= pageCount; i++)
-            {
-                var pageRequest = new RestRequest($"https://world.openfoodfacts.org/cgi/search.pl?search_terms={productName}&search_simple=1&json=1&page={i}", Method.Get);
-                var pageResponse = client.Get(pageRequest);
-                if (pageResponse.IsSuccessful)
-                {
-
-                    using (JsonDocument document = JsonDocument.Parse(response.Content))
-                    {
-                        var options = new JsonSerializerOptions()
-                        {
-                            NumberHandling = JsonNumberHandling.AllowReadingFromString |
-                            JsonNumberHandling.WriteAsString
-                        };
-                        JsonElement root = document.RootElement;
-
-                        var productJson = root.GetProperty("products");
-                        products.AddRange(JsonSerializer.Deserialize<IEnumerable<Product>>(productJson, options));
-                    }
-                }
-                else
-                {
-                    throw new Exception("response failed");
-                }
-            }
-            return products;
         }
     }
 }

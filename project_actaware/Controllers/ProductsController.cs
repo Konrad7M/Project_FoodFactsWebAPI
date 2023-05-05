@@ -1,8 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using project_actaware.Commands;
 using project_actaware.Execptions;
+using project_actaware.MiddleWare;
 using project_actaware.Models;
 
 namespace project_actaware.Controllers
@@ -11,12 +13,12 @@ namespace project_actaware.Controllers
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
-        private readonly string _apiKey = "TWÓJ_API_KEY";
         private readonly IMediator _mediator;
         public ProductsController (IMediator mediator)
         {
             _mediator = mediator;
         }
+        [ApiKey]
         [HttpGet("getProductByBarcode/{barcode}")]
         public async Task<IActionResult> GetProductByBarcode(string barcode)
         {
@@ -31,6 +33,7 @@ namespace project_actaware.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [ApiKey]
         [HttpGet("getProductsByName/{productName}")]
         public async Task<IActionResult> GetProductByName(string productName)
         {
