@@ -1,4 +1,5 @@
 using project_actaware.MiddleWare;
+using project_actaware.Services;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 builder.Services.AddSingleton<ApiKeyAuthorizationFilter>();
 builder.Services.AddSingleton<IApiKeyValidator, ApiKeyValidator>();
+builder.Services.AddScoped<IProductService, ProductService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
