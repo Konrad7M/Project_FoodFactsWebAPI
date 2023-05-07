@@ -8,10 +8,10 @@ using System.Text.Json.Serialization;
 
 namespace project_actaware.CommandHandlers
 {
-    public class GetProductsByNameCommandHandler : IRequestHandler<GetProductsByNameCommand, IEnumerable<Product>>
+    public class GetProductsByNameCommandHandler : IRequestHandler<GetProductsByNameCommand, IEnumerable<ProductDTO>>
     {
         private int pageCount;
-        public async Task<IEnumerable<Product>> Handle(GetProductsByNameCommand command, CancellationToken cancelationToken)
+        public async Task<IEnumerable<ProductDTO>> Handle(GetProductsByNameCommand command, CancellationToken cancelationToken)
         {
             var products = await GetProducts(command.ProductName, 1, cancelationToken, true);
             for(int i = 2; i <= pageCount; i++)
@@ -21,7 +21,7 @@ namespace project_actaware.CommandHandlers
             return products;
         }
 
-        private async Task<List<Product>> GetProducts(string productName, int pageNumber, CancellationToken cancelationToken, bool checkPageCount = false)
+        private async Task<List<ProductDTO>> GetProducts(string productName, int pageNumber, CancellationToken cancelationToken, bool checkPageCount = false)
         {
             var client = new RestClient("https://world.openfoodfacts.org");
             var request = new RestRequest($"https://world.openfoodfacts.org/cgi/search.pl?search_terms={productName}&search_simple=1&json=1&page={pageNumber}", Method.Get);
@@ -52,7 +52,7 @@ namespace project_actaware.CommandHandlers
                     pageCount = JsonSerializer.Deserialize<int>(root.GetProperty("page_count"));
                 }
                 var productJson = root.GetProperty("products");
-                return JsonSerializer.Deserialize<List<Product>>(productJson, options) ?? throw new Exception("deserialization failed");
+                return JsonSerializer.Deserialize<List<ProductDTO>>(productJson, options) ?? throw new Exception("deserialization failed");
             }
         }
     }

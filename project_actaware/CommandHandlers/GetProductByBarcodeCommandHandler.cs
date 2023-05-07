@@ -9,9 +9,9 @@ using System.Text.Json.Serialization;
 
 namespace project_actaware.CommandHandlers;
 
-public class GetProductByBarcodeCommandHandler: IRequestHandler<GetProductByBarcodeCommand,Product>
+public class GetProductByBarcodeCommandHandler: IRequestHandler<GetProductByBarcodeCommand,ProductDTO>
 {
-    public async Task<Product> Handle(GetProductByBarcodeCommand command,CancellationToken cancelationToken)
+    public async Task<ProductDTO> Handle(GetProductByBarcodeCommand command,CancellationToken cancelationToken)
     {
         var barcode = command.Barcode;
         var client = new RestClient("https://world.openfoodfacts.org");
@@ -43,7 +43,7 @@ public class GetProductByBarcodeCommandHandler: IRequestHandler<GetProductByBarc
                 throw new BusinessException("product not found");
             }
             var productJson = root.GetProperty("product");
-            var product = JsonSerializer.Deserialize<Product>(productJson, options);
+            var product = JsonSerializer.Deserialize<ProductDTO>(productJson, options);
             return product ?? throw new Exception("desarialization failed");
         }
     }

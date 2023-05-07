@@ -25,7 +25,7 @@ namespace project_actaware.Controllers
         {
             try
             {
-                Product product = await _mediator.Send(new GetProductByBarcodeCommand(barcode));
+                ProductDTO product = await _mediator.Send(new GetProductByBarcodeCommand(barcode));
 
                 return Ok(product);
             }
@@ -39,7 +39,7 @@ namespace project_actaware.Controllers
         {
             try
             {
-                IEnumerable<Product> products = await _mediator.Send(new GetProductsByNameCommand(productName));
+                IEnumerable<ProductDTO> products = await _mediator.Send(new GetProductsByNameCommand(productName));
 
                 return Ok(products);
             }
