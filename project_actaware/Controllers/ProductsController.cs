@@ -20,7 +20,7 @@ namespace project_actaware.Controllers
             _mediator = mediator;
         }
        
-        [HttpGet("getProductByBarcode/{barcode}")]
+        [HttpGet("productByBarcode/{barcode}")]
         public async Task<IActionResult> GetProductByBarcode(string barcode)
         {
             try
@@ -34,7 +34,7 @@ namespace project_actaware.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("getProductsByName/{productName}")]
+        [HttpGet("productsByName/{productName}")]
         public async Task<IActionResult> GetProductByName(string productName)
         {
             try

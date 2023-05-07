@@ -2,7 +2,7 @@
 
 namespace project_actaware.Models
 {
-    public class Product
+    public class ProductDTO
     {
         [JsonPropertyName("product_name")]
         public string ProductName { get; set; }
@@ -15,7 +15,7 @@ namespace project_actaware.Models
         [JsonPropertyName("code")]
         public string Barcode { get; set; }
         [JsonPropertyName("nutriments")]
-        public Nutriments Nutriments { get; set; }
+        public NutrimentsDTO Nutriments { get; set; }
 
     }
 }
