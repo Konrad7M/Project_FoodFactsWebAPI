@@ -27,7 +27,7 @@ namespace project_actaware.Controllers
             }
             catch(BusinessException ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex.ErrorType.ToString());
             }
         }
         [HttpGet("productsByName/{productName}")]
@@ -41,7 +41,7 @@ namespace project_actaware.Controllers
             }
             catch (BusinessException ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex.ErrorType.ToString());
             }
         }
     }

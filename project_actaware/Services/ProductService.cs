@@ -26,7 +26,7 @@ namespace project_actaware.Services
             }
             if (response.Content == null)
             {
-                throw new Exception("response content null");
+                throw new BusinessException(ErrorTypeEnum.ResponseContentNull,"response content null");
             }
             using (JsonDocument document = JsonDocument.Parse(response.Content))
             {
@@ -39,7 +39,7 @@ namespace project_actaware.Services
                 var statusCode = root.GetProperty("status");
                 if (JsonSerializer.Deserialize<int>(statusCode) == 0)
                 {
-                    throw new BusinessException("product not found");
+                    throw new BusinessException(ErrorTypeEnum.ProductNotFound,"product not found");
                 }
                 var productJson = root.GetProperty("product");
                 var product = JsonSerializer.Deserialize<ProductDTO>(productJson, options);
@@ -73,7 +73,7 @@ namespace project_actaware.Services
             }
             if (response.Content == null)
             {
-                throw new Exception("response content null");
+                throw new BusinessException(ErrorTypeEnum.ResponseContentNull,"response content null");
             }
             using (JsonDocument document = JsonDocument.Parse(response.Content))
             {
@@ -91,7 +91,5 @@ namespace project_actaware.Services
                 return JsonSerializer.Deserialize<List<ProductDTO>>(productJson, options) ?? throw new Exception("deserialization failed");
             }
         }
-
-
     }
 }
