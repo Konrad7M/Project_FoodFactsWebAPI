@@ -23,7 +23,7 @@ namespace project_actaware.CommandHandlers
 
         private async Task<List<ProductDTO>> GetProducts(string productName, int pageNumber, CancellationToken cancelationToken, bool checkPageCount = false)
         {
-            var client = new RestClient("https://world.openfoodfacts.org");
+            var client = new RestClient();
             var request = new RestRequest($"https://world.openfoodfacts.org/cgi/search.pl?search_terms={productName}&search_simple=1&json=1&page={pageNumber}", Method.Get);
             var retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(i * 5));
             var response = await retryPolicy.ExecuteAsync(async () =>

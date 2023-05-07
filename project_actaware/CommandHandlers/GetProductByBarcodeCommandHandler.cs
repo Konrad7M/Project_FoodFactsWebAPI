@@ -14,7 +14,7 @@ public class GetProductByBarcodeCommandHandler: IRequestHandler<GetProductByBarc
     public async Task<ProductDTO> Handle(GetProductByBarcodeCommand command,CancellationToken cancelationToken)
     {
         var barcode = command.Barcode;
-        var client = new RestClient("https://world.openfoodfacts.org");
+        var client = new RestClient();
         var request = new RestRequest($"https://world.openfoodfacts.org/api/v0/product/{barcode}.json", Method.Get);
         var retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(i * 5));
         var response = await retryPolicy.ExecuteAsync(async () =>
