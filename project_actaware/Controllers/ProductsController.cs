@@ -1,16 +1,12 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Models;
 using project_actaware.Commands;
 using project_actaware.Execptions;
-using project_actaware.MiddleWare;
 using project_actaware.Models;
 
 namespace project_actaware.Controllers
 {
     [ApiController]
-    [ApiKeyAuthorization]
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
