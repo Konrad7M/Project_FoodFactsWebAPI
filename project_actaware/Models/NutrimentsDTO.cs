@@ -2,7 +2,7 @@
 
 namespace project_actaware.Models
 {
-    public class Nutriments
+    public class NutrimentsDTO
     {
         [JsonPropertyName("carbohydrates_100g")]
         public double CarbohydratesPer100g { get; set; }
